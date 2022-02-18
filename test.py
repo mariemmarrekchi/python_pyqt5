@@ -35,11 +35,12 @@ class Ui_MainWindow(object):
                  self.triAdd.addItem(self.input.text())
                  self.input.setText("")
                  self.erreur.setText(" ")
+                 print("add entier")
 
                  
             elif p and test : # valeur enter et la valeur input str
                  self.triAdd.addItem(self.input.text())
-                 print("yes")
+                 print("yes carac or chaine")
                  self.erreur.setText(" ")
                 
             else:
@@ -66,18 +67,16 @@ class Ui_MainWindow(object):
           value=self.triAdd.item(myselcted).text()
         
           self.triAdd.takeItem(myselcted)
+         
           print(value)
-          
+          print("count listwidget")
           print(self.triList.count())
-          for x in range(len(self.listSorted)):
-              print(x)
-              if(value in self.listSorted):
-                  self.listSorted.pop(x)
-                  self.triList.takeItem(x)
-              else:
-                  break
-
-                  
+          if(value in self.listSorted):
+                  index=self.listSorted.index(value)
+                  self.listSorted.pop(index)
+                  self.triList.takeItem(index)
+                  print(index)
+                  print(self.listSorted)
           self.input.setText("")
         else:
             self.delete_2.setDisabled(True)  
@@ -127,6 +126,7 @@ class Ui_MainWindow(object):
                
             
             self.update.setDisabled(True)
+
     def trier(self):
             items=[]
            
@@ -136,13 +136,26 @@ class Ui_MainWindow(object):
     
             unique_items_set = set(items)
             self.listSorted=list(unique_items_set)
-            self.listSorted.sort()
+            #self.listSorted.sort()
+            #par selection
+            for x in range(len(self.listSorted)):
+          # Trouver le min
+             min = x
+             for j in range(x+1, len(self.listSorted)):
+               if self.listSorted[min] > self.listSorted[j]:
+                min = j
+                
+             tmp = self.listSorted[x]
+             self.listSorted[x] = self.listSorted[min]
+             self.listSorted[min] = tmp
             self.triList.clear()
             if self.listSorted !=None:
                 for x in range(len(self.listSorted)):
                     self.triList.addItem(str(self.listSorted[x]))
                     print(self.listSorted[x])        
                 print(self.listSorted)
+
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
